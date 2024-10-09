@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Page 2</h1>
+    <h3>Welcome to Page 2</h3>
+    <button onclick="redirectToLanding()">Back to Landing Page</button>
+    <script>
+        window.onload = async function() {
+            const tabToken = sessionStorage.getItem('tabToken');
+
+            if (!tabToken) {
+                window.location.href = "/login.html"
+            }
+
+            try {
+                const response = await fetch(`/api/check-session?tabToken=${tabToken}`);
+                if (response.status === 401) {
+                    localStorage.removeItem('tabToken');
+                    window.location.href = '/login.html';
+
+                } 
+            } catch (err) {
+                console.error('Error:', err);
+                window.location.href = '/login.html'
+            }
+        }
+        
+        function redirectToLanding() {
+            window.location.href = '/landing.html';
+        }
+    </script>
+</body>
+</html>

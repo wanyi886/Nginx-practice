@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nodejs:
+    build: 
+      context: .
+      target: node-app
+    container_name: nodejs
+    restart: unless-stopped
+    environment:
+      - NODE_APP_HOST
+      - NODE_APP_PORT
+      - SECRET_KEY=${SECRET_KEY}
+    ports:
+      - "${NODE_APP_PORT:-2370}:${NODE_APP_PORT:-2370}"
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  nginx:
+    build: .
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_PORT:-70}:${NGINX_PORT:-70}"
+    environment:
+      - NGINX_HOST
+      - NGINX_PORT
+      - NODE_APP_PORT
+    depends_on:
+      - nodejs
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
