@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const redis = require('redis');
 const session = require('express-session');
+const RedisStore = require('connect-redis').default;
 const bcryptjs = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
@@ -8,10 +10,41 @@ const app = express();
 const port = process.env.NODE_APP_PORT;
 // const host = process.env.NODE_APP_HOST;
 
+const redisPort = process.env.REDIS_PORT || 6379;
+const redisPWD = process.env.redisPWD;
+
+
+// initialize a redis connection
+const redisClient = redis.createClient({
+    url:`redis://localhost:${redisPort}`,
+    password: redisPWD
+});
+
+// only catch the errors occur during initial connection
+redisClient.connect().catch( err => {
+    console.log('Failed to connect: ', err)
+}
+); 
+
+// catch other errors happened throughout the connection lifetime
+redisClient.on('error', err => 
+    console.log('Redis client error: ', err)
+);
+
+redisClient.on('connect', () => 
+    console.log('Connected to Redis.')
+);
+
+const sessionStore = new RedisStore({ 
+    client: redisClient 
+})
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.use(session({
+    store: sessionStore,
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
