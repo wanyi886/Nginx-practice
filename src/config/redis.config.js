@@ -1,7 +1,7 @@
 const redis = require('redis');
 
 const redisPort = process.env.REDIS_PORT || 6379;
-const redisPWD = process.env.redisPWD;
+const redisPWD = process.env.REDIS_PASSWORD;
 
 // initialize a redis connection
 const redisClient = redis.createClient({

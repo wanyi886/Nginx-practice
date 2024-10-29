@@ -1,5 +1,5 @@
 const express = require('express');
-const { users } = require('../models/user');
+const { users } = require('../models/users');
 const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');
