@@ -1,12 +1,13 @@
 const express = require('express');
 const { users } = require('../models/users');
-const { v4: uuidv4 } = require('uuid');
+const bcryptjs = require('bcryptjs');
+// const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');
 const sessionCookies = require('../utils/session.cookies')
 
 
-router.post('login', async (req, res) => {
+router.post('/login', async (req, res) => {
 
     const { username, password } = req.body;
     const user = users.find(u => u.username === username);
