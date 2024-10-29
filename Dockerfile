@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY . .
 EXPOSE 2370
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
 
 
 # Nginx
