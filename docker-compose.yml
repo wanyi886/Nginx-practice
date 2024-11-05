@@ -10,6 +10,7 @@ services:
       - NODE_APP_HOST
       - NODE_APP_PORT
       - SECRET_KEY=${SECRET_KEY}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     ports:
       - "${NODE_APP_PORT:-2370}:${NODE_APP_PORT:-2370}"
     env_file:
