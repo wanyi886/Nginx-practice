@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUserById, getUserByUsername } = require('../models/users');
+const { getUserByUsername } = require('../models/users');
 const bcryptjs = require('bcryptjs');
 const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');

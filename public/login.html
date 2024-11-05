@@ -31,12 +31,14 @@
 
             const data = await response.json();
 
-            if (response.status === 401 ) {
-                window.location.href = '/login.html'
+            if (response.ok) {
+                sessionStorage.setItem('tabToken',data.tabToken);
+                window.location.href = '/landing.html'
+            } else {
+                alert(data.message);
             }
+            
 
-            sessionStorage.setItem('tabToken',data.tabToken);
-            window.location.href = '/landing.html'
         });
 
     </script>
