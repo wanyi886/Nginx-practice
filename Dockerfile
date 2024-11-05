@@ -11,9 +11,6 @@ CMD ["node", "src/index.js"]
 # Nginx
 FROM nginx:alpine
 
-# Remove default Nginx config
-# RUN rm /etc/nginx/conf.d/default.conf
-
 # Copy the Nginx config
 COPY default.conf /etc/nginx/conf.d/default.conf
 
