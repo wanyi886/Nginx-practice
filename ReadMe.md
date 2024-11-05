@@ -1,16 +1,12 @@
-How to run the app:
+Concepts:
+- HTML + Nginx as Frontend,  Express + Redis as Backend
+- Use bash script and docker-compose to host the app
 
-On Localhost:
+How to run the app:
+- Download the repo
 - Open .env.local file in the root directory
 - Change environment variables
-- Run command: chmod +x start-local.sh
+- Run command: chmod +x start-local.sh (To grant the permission of the script file)
 - Run command: ./start-local.sh
 - Go to http://localhost:2370/login.html
-
-Notes:
-- HTML + Nginx as Frontend,  Express as Backend
-- Use bash script and docker-compose to host the app
-- API:
-    - POST /api/login
-    - GET /api/check-session
-    - GET /api/logout
+- Credentials: theuser / abc123
