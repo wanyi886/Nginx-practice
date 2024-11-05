@@ -1,7 +1,6 @@
 const express = require('express');
-const { users } = require('../models/users');
+const { getUserById, getUserByUsername } = require('../models/users');
 const bcryptjs = require('bcryptjs');
-// const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');
 const sessionCookies = require('../utils/session.cookies')
@@ -10,7 +9,9 @@ const sessionCookies = require('../utils/session.cookies')
 router.post('/login', async (req, res) => {
 
     const { username, password } = req.body;
-    const user = users.find(u => u.username === username);
+    const user = await getUserByUsername(username);
+
+    console.log("uuuuu", user);
 
     if (user && bcryptjs.compareSync(password, user.password)) {
         req.session.userId = user.id;
@@ -47,7 +48,7 @@ router.get('/logout', (req, res) => {
             console.error('Error destroying session:', err);
         }
 
-        sesionCookies.forEach(cookie => {
+        sessionCookies.forEach(cookie => {
             res.clearCookie(cookie.name);
         });
 
