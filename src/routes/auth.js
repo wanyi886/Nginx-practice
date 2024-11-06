@@ -1,3 +1,4 @@
+
 const express = require('express');
 const { getUserByUsername } = require('../models/users');
 const bcryptjs = require('bcryptjs');
@@ -5,6 +6,8 @@ const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');
 const sessionCookies = require('../utils/session.cookies')
 
+const host = process.env.NGINX_HOST;
+const port = process.env.NGINX_PORT;
 
 router.post('/login', async (req, res) => {
 
@@ -30,7 +33,7 @@ router.post('/login', async (req, res) => {
         })
 
         res.json({ 
-            redirect: '/landing.html', 
+            redirect: `http://${host}:${port}/home.html`, 
             message: 'Log in Successfully!', 
             tabToken: tabToken
         })

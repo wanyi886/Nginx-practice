@@ -12,7 +12,7 @@ How to run the app:
 - If you want to check the redis connection or the database initialization is successful, run the commands below after running 
     - docker-compose exec nodejs node test-checkRedis.js
     - docker-compose exec nodejs node test-checkDB.js
-- Go to http://localhost:2370/login.html
+- Go to http://localhost:70/login.html
 - Credentials: theuser / abc123
 
 

@@ -29,6 +29,8 @@ const getUserByUsername = async(username) => {
     return finalUser;
 }
 
+
+
 module.exports = {
     users,
     getUserByUsername
