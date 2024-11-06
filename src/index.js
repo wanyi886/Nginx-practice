@@ -11,15 +11,19 @@ const startServer = async () => {
         // Initialize Redis and creates the connection
         await initRedis();
         
-        // Then create the Express app and import session config
         const app = express();
         const sessionConfig = require('./config/session.config');
         const port = process.env.NODE_APP_PORT;
         
-        app.use(cors());
+        app.use(cors({
+            origin: 'http://localhost:70',
+            credentials: true,
+            method: ['GET', 'POST', 'OPTIONS'],
+            allowedHeaders: [ 'Content-Type', 'Authorization'],
+        }));
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
-        app.use(sessionConfig); // use the existing connection
+        app.use(sessionConfig); // use the existing redis connection
 
         app.use(express.static('public'));
 

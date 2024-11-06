@@ -1,4 +1,4 @@
-import { redirectToLogin } from "./utils.js";
+import { redirectToLogin, redirectToHome } from "./utils.js";
 
 import config from "../config/config.js";
 
@@ -18,13 +18,14 @@ const handleLogin = async (event) =>  {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ username, password }),
+            credentials: 'include'
         });
 
         const data = await response.json();
 
         if (response.ok) {
             sessionStorage.setItem('tabToken', data.tabToken);
-            window.location.href = '/home.html';
+            redirectToHome();
         } else {
             alert(data.message);
         }
@@ -38,20 +39,42 @@ const handleLogout = async () => {
     const tabToken = sessionStorage.getItem('tabToken');
     
     try {
-        const response = await fetch(`http://${nodeHost}:${nodePort}/api/logout?tabToken=${tabToken}`);
+        const response = await fetch(`http://${nodeHost}:${nodePort}/api/logout?tabToken=${tabToken}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${tabToken}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
         const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message);
+        }
         sessionStorage.removeItem('tabToken');
-        window.location.href = data.redirect || './login.html'; 
+        redirectToLogin();
     } catch (error) {
         console.error('Logout error:', error);
         redirectToLogin();
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const initializeAuth = () => {
+    
     const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', handleLogin);
-});
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', handleLogout);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', initializeAuth);
 
 export {
     handleLogin,

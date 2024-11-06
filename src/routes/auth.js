@@ -44,10 +44,11 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     
     req.session.destroy((err) => {
         if (err) {
+            res.status(500).json({ message: 'Some errors happened during log out process.'})
             console.error('Error destroying session:', err);
         }
 
@@ -55,7 +56,7 @@ router.get('/logout', (req, res) => {
             res.clearCookie(cookie.name);
         });
 
-        res.redirect('/login.html');
+        res.status(200).json({ message: 'Log out successfully.' })
     });
 });
 

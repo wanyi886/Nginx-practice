@@ -1,3 +1,8 @@
+import config from "../config/config.js";
+
+const nodeHost = config.nodeHost;
+const nodePort = config.nodePort;
+
 const checkSession = async () => {
     const tabToken = sessionStorage.getItem('tabToken');
 
@@ -7,7 +12,12 @@ const checkSession = async () => {
     }
 
     try {
-        const response = await fetch(`/api/check-session?tabToken=${tabToken}`);
+        const response = await fetch(`http://${nodeHost}:${nodePort}/api/check-session?tabToken=${tabToken}`, {
+            headers: {
+                'Authorization': `Bearer ${tabToken}`
+            },
+            credentials: 'include'
+        });
 
         if (response.status === 401) {
             sessionStorage.removeItem('tabToken');
@@ -22,7 +32,7 @@ const checkSession = async () => {
     }
 };
 
-// Navigation helper functions
+
 const redirectToLogin = () => {
     window.location.href = '../login.html';
 };
