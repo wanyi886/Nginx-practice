@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { initRedis, getRedisClient } = require('../config/redis.config');
+const { initRedis, getRedisClient } = require('./src/config/redis.config');
 
 const checkDatabase = async () => {
     try {
@@ -13,7 +13,7 @@ const checkDatabase = async () => {
         const allKeys = await redisClient.keys('*');
         console.log('Found keys:', allKeys);
 
-        // Check each user in the database
+        // Check if default users are in the database
         console.log('\n=== User Details ===\n');
         for (const key of allKeys) {
             if (key.startsWith('user:')) {

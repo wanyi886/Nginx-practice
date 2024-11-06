@@ -12,33 +12,6 @@
         <input type="password" id="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <p id="response"></p>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.status === 401 ) {
-                window.location.href = '/login.html'
-            }
-
-            sessionStorage.setItem('tabToken',data.tabToken);
-            window.location.href = '/landing.html'
-        });
-
-    </script>
+    <script type="module" src="./js/auth.js"></script>
 </body>
 </html>

@@ -1,16 +1,20 @@
+
 const express = require('express');
-const { users } = require('../models/users');
+const { getUserByUsername } = require('../models/users');
 const bcryptjs = require('bcryptjs');
-// const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 const { generateTabToken, tabTokens } = require('../utils/token');
 const sessionCookies = require('../utils/session.cookies')
 
+const host = process.env.NGINX_HOST;
+const port = process.env.NGINX_PORT;
 
 router.post('/login', async (req, res) => {
 
     const { username, password } = req.body;
-    const user = users.find(u => u.username === username);
+    const user = await getUserByUsername(username);
+
+    console.log("uuuuu", user);
 
     if (user && bcryptjs.compareSync(password, user.password)) {
         req.session.userId = user.id;
@@ -29,7 +33,7 @@ router.post('/login', async (req, res) => {
         })
 
         res.json({ 
-            redirect: '/landing.html', 
+            redirect: `http://${host}:${port}/home.html`, 
             message: 'Log in Successfully!', 
             tabToken: tabToken
         })
@@ -40,18 +44,19 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     
     req.session.destroy((err) => {
         if (err) {
+            res.status(500).json({ message: 'Some errors happened during log out process.'})
             console.error('Error destroying session:', err);
         }
 
-        sesionCookies.forEach(cookie => {
+        sessionCookies.forEach(cookie => {
             res.clearCookie(cookie.name);
         });
 
-        res.redirect('/login.html');
+        res.status(200).json({ message: 'Log out successfully.' })
     });
 });
 

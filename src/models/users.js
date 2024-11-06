@@ -15,22 +15,23 @@ const ensureClient = async() => {
     return redisClient;
 } 
 
-const getUserById = async (id) => {
-    const redisClient = await ensureClient();
-    const user = await redisClient.hGetAll(`user:${id}`);
-    if (!user.id) return null;
-    return user;
-};
-
 const getUserByUsername = async(username) => {
-    const redisClient = ensureClient();
+    const redisClient = await ensureClient();
+    
     const userId = await redisClient.get(`username:${username}`);
     if (!userId) return null;
-    return getUserById(userId);
+    
+    // this returns a special object [Object: null prototype], so need to convert it to regular object
+    const user = await redisClient.hGetAll(`user:${userId}`);
+    if (Object.keys(user).length === 0) return null;
+    
+    const finalUser = { ...user };
+    return finalUser;
 }
+
+
 
 module.exports = {
     users,
-    getUserById,
     getUserByUsername
 };
