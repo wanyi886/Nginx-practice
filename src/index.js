@@ -1,8 +1,10 @@
 
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { initRedis } = require('./config/redis.config');
 const authRoutes = require('./routes/auth');
+
 
 const startServer = async () => {
     try {
@@ -13,7 +15,8 @@ const startServer = async () => {
         const app = express();
         const sessionConfig = require('./config/session.config');
         const port = process.env.NODE_APP_PORT;
-
+        
+        app.use(cors());
         app.use(express.json());
         app.use(express.urlencoded({ extended: true }));
         app.use(sessionConfig); // use the existing connection
