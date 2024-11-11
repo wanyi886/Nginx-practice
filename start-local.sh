@@ -40,5 +40,5 @@ while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
 
 done
 
-echo "Error: Node.js container failed to start properly after $MAX_ATTEPMTS attempts"
+echo "Error: Node.js container failed to start properly after $MAX_ATTEMPTS attempts"
 exit 1
