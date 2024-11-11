@@ -17,3 +17,8 @@ How to run the app:
 - Credentials: theuser / abc123
 
 
+How to stop the app and clean up the data and Docker images:
+- Run command: chmod +x stop-local.sh 
+- Run command: ./stop-local.sh
+
+
