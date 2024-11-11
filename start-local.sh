@@ -21,11 +21,14 @@ while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
     if docker-compose ps nodejs | grep "Up"; then
         echo "Node.js container is up!"
 
-        sleep 5 
+        sleep 3 
 
         echo "Initializing database..."
         if docker-compose exec nodejs node src/config/initDB.js; then
+            sleep 1
             echo "Database initialization completed successfully"
+            sleep 1
+            exit 0
         else 
             echo "Database initialization failed."
             exit 1
@@ -38,3 +41,4 @@ while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
 done
 
 echo "Error: Node.js container failed to start properly after $MAX_ATTEPMTS attempts"
+exit 1
