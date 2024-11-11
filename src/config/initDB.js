@@ -21,13 +21,14 @@ const initializeDatabase = async () => {
             // create a simple key-value pair for username lookup
             await redisClient.set(`username:${user.username}`, user.id);
         }
-        console.log(`Successfully initialized database.`);
-        
+        await redisClient.quit();
+        console.log("Added default users in Redis.");
         return true;
+
     } catch (error){
         console.error('Error happened during initialize database:', error);
         await redisClient.quit();
-
+        return false;
     }
 }
 

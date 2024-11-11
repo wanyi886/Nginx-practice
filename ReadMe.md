@@ -10,7 +10,7 @@ How to run the app:
 - Change environment variables
 - Run command: chmod +x start-local.sh (To grant the permission of the script file)
 - Run command: ./start-local.sh
-- If you want to check the redis connection or the database initialization is successful, run the commands below after running 
+- If you want to check the redis connection or the default users are in the db, run the commands belows
     - docker-compose exec nodejs node test-checkRedis.js
     - docker-compose exec nodejs node test-checkDB.js
 - Go to http://localhost:70/login.html

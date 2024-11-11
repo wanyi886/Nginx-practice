@@ -26,7 +26,7 @@ while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
         echo "Initializing database..."
         if docker-compose exec nodejs node src/config/initDB.js; then
             sleep 1
-            echo "Database initialization completed successfully"
+            echo "Database initialization completed."
             sleep 1
             exit 0
         else 
